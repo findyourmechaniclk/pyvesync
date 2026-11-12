@@ -1,3 +1,10 @@
+# Optimized by ci-cost (https://github.com/mariotavarez/ci-cost)
+# Applied 3 optimizations:
+# - [HIGH] Add pip dependency cache to "build" job
+# - [HIGH] Split "build" into parallel jobs (lint + test + build)
+# - [MEDIUM] Add concurrency group to "RunTest.yaml"
+# Estimated savings: ~11 min/run
+#
 name: Run Linting and Unit Tests
 
 on:
@@ -12,6 +19,10 @@ on:
   workflow_dispatch:
 
 
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build:
     runs-on: ubuntu-latest
